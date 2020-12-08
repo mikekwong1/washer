@@ -23,6 +23,10 @@ export default {
               console.log('注释');
               this.$router.push('/annotation')
             break;
+            case 49: 
+            console.log()
+              this.$router.push('/wifi')
+            break;
           }
         })
       }

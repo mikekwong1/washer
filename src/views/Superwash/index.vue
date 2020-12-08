@@ -1,6 +1,6 @@
 <template>
    <div class="superwash" >
-       <span class="left-time" >12:00</span>
+       <span class="left-time" >{{hours}}:{{month}}</span>
         <div class="left" >
             <span class="left-container" >70°超强洗</span>
             <span class="left-bottom" >1时55分</span>
@@ -29,28 +29,53 @@
                     <span v-for="(item,index) in  fencheng" :key="index" >{{item}}</span>
                 </div>
             </div>
+             <div class="indexstwo"  v-show="indexs==6" >
+                <span class="cunxian" >预约</span>
+                <div class="left" >结束时间</div>
+                <div class="time-box" >
+                    <!-- <Timeloop  :counts="Minutecounts"  class="minute" ></Timeloop> -->
+                </div>
+            </div>
        </div>
    </div>
 </template>
 
 <script>
+import Timeloop from '../../components/Timeloop'
 export default {
+    
    data () {
       return {
-          indexs:0,
-          classindex:1,
-          arr:[{title:'智能投放',num:1},{title:'智能鲜存',num:2},{title:'纳米净泡',num:3},{title:'例子热烘',num:4},{title:'等曾洗涤',num:5},{title:'预约时间',num:6}],
-          xiancun:['24小时','72小时','168小时','关闭'],
-          naimi:['开始','关闭'],
-          fencheng:['上层','全层','下层']
+            indexs:0,
+            classindex:1,
+            hours:0,
+            month:0,
+            arr:[{title:'智能投放',num:1},{title:'智能鲜存',num:2},{title:'纳米净泡',num:3},{title:'例子热烘',num:4},{title:'等曾洗涤',num:5},{title:'预约时间',num:6}],
+            xiancun:['24小时','72小时','168小时','关闭'],
+            naimi:['开始','关闭'],
+            fencheng:['上层','全层','下层'],
+            // Minutecounts: null,
+            
       };
    },
 
-   components: {},
+   components: {
+       Timeloop
+   },
 
    computed: {},
 
-   methods: {
+    methods: {
+        inittimes(){
+            var m_arr = [];
+            var ii = 0;
+            for(; li < 24; ii++){
+                m_arr.push(ii)
+            }
+            this.Minutecounts = m_arr;
+
+        },
+
        control(){
             window.addEventListener('keydown',(event)=>{
             switch (event.keyCode){
@@ -66,23 +91,34 @@ export default {
                 case 13: 
                     this.click(this.arr[this.classindex].num);
                 break;
+                case 32:
+                    this.indexs = 0;
+                break;
             }
             })  
         },
         move(){
             var index = this.classindex-1;
-           index = index < 0 ? 0 : index;
-           index = index > this.arr.length -2 ? this.arr.length -2 :index;  
+            index = index < 0 ? 0 : index;
+            index = index > this.arr.length -2 ? this.arr.length -2 :index;  
             var ed_style = -177.66*index ;
-            this.$refs.move_wraper.style['transition'] = '-webkit-transform 0.3s' 
-            this.$refs.move_wraper.style['-webkit-transform']  = 'translateX(' + ed_style + 'px)'
+            if(this.$refs.move_wraper){ 
+                 this.$refs.move_wraper.style['transition'] = '-webkit-transform 0.3s' 
+                this.$refs.move_wraper.style['-webkit-transform']  = 'translateX(' + ed_style + 'px)'
+            }
+           
         },
         click(index){
             this.indexs = index;
         }
-   },mounted(){
+    },mounted(){
        this.control();
-   }
+       this.hours =  String(new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours())
+       this.month =  String(new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes())
+    },created(){
+       // this.inittimes(); 
+        console.log(this.$root)      
+    }
 }
 </script>
 <style lang='css' scoped>
@@ -162,6 +198,11 @@ export default {
     .indexstwo>div>span{
         flex: 1;
         text-align: center;
+    }
+    .indexstwo>.time-box{
+        position: absolute;
+        left: 200px;
+        top: 40px;
     }
     /* indextwo end */
 
