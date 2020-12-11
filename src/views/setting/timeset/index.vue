@@ -3,94 +3,45 @@
         <p class="header" >
             设置时间
         </p>
-         <div class="time-box" >
-            <!-- <Colon class="colon_hao">:</Colon> -->
-            <TimeHour
-                key="'mi'"
-                :counts="Minutecounts"
-                class="minute timeloop"
-                :class=" timpindex[active] == timpindex[0] ? 'active' : '' "
-                :timpindex ="timpindex[active] "
-                :highactive ="highactive"
-                :active_i="h"
-                :pitch="pitch"
-                @loop1="loop1"
-                @loop2="loop2"
-                @loop3="loop3"
-                :ActiveIndex ="ActiveIndex"
-            ></TimeHour>
-                <span class="time" >时</span>
-            <TimeMinute
-                key="'si'"
-                :counts="Secondcounts"
-                class="second timeloop"
-                :class=" timpindex[active] == timpindex[1] ? 'active' : '' "
-                :timpindex ="timpindex[active] "
-                :active_i="m"
-                :pitch="pitch"
-                @loop1="loop1"
-                @loop2="loop2"
-                @loop3="loop3"
-            ></TimeMinute>
-            <span class="fen" >分</span>
+        <div class="time-box" >
+            <TimeYear  class=" year timeloop" :pitch="pitch" :counts="yearcounts" :timpindex ="timpindex[active] "  :class=" timpindex[active] == timpindex[0] ? 'active' : '' "  ></TimeYear>
+            <span class="timeset-year" >年</span>
+            <TimeMonth class=" month timeloop" :pitch="pitch" :counts="monthcounts" :timpindex ="timpindex[active] "  :class=" timpindex[active] == timpindex[1] ? 'active' : '' "  ></TimeMonth> 
+            <span class="timeset-month" >月</span>
+            <TimeDay class=" day timeloop" :pitch="pitch" :counts="daycounts" :timpindex ="timpindex[active] "  :class=" timpindex[active] == timpindex[2] ? 'active' : '' " ></TimeDay>
+            <span class="timeset-day" >日</span>
+            <TimeHour class=" hours timeloop" :pitch="pitch" :counts="daycounts" :timpindex ="timpindex[active] "  :class=" timpindex[active] == timpindex[3] ? 'active' : '' " ></TimeHour>
+            <span class="timeset-time" >时</span>
+            <TimeMinute class=" minute timeloop" :pitch="pitch" :counts="daycounts" :timpindex ="timpindex[active] "  :class=" timpindex[active] == timpindex[4] ? 'active' : '' " ></TimeMinute>
+            <span class="timeset-minute" >分</span>
         </div>
     </div>
 </template>
 
 <script>
-import Colon from '@/components/colon.vue'
- import TimeHour from '@/components/TimeHour.vue'
+import TimeYear from '@/components/TimeYear.vue'
+import TimeMonth from '@/components/TimeMonth.vue'
+import TimeDay from '@/components/TimeDay.vue'
+import TimeHour from '@/components/TimeHour.vue'
 import TimeMinute from '@/components/TimeMinute.vue'
+
 export default {
     components:{
-        TimeHour,Colon,TimeMinute
+        TimeYear,TimeMonth,TimeDay,TimeHour,TimeMinute
     },
     data(){
        return{
-            timpindex:[0,1],
-            active:0,
-            Minutecounts:null,
-            Secondcounts:null,
-            highactive:0,
-            m:0,
-            h:0,
+            yearcounts:null,
+            monthcounts:null,
+            daycounts:null,
             pitch:false,
+            timpindex:['0','1','2','3','4'],
+            active:0,
             bright:true,
-            name:null
        }
     },
     methods:{
-        ActiveIndex:function(ActiveIndex){
-            this.name = ActiveIndex
-            console.log(this.name)
-        },
-          // 时间start
-        inittimes(){
-                var m_arr = [];
-                var s_arr = [];
-                var ii = 0;
-                var ir = 0
-                for (; ii <= 24; ii++) {
-                    m_arr.push(ii)
-                }
-                for (; ir < 60; ir++) {
-                    s_arr.push(ir)
-                }
-                this.Minutecounts = m_arr;
-                this.Secondcounts = s_arr;
-        },
-        loop1(msg) {
-            // 设置分钟
-            this.m = msg;
-        },
-        loop2(msg) {
-            // 设置小时
-            this.h = msg;
-        },
-        loop3(msg) {
-            console.log('loop3')
-            console.log(msg)
-        },
+      
         control(){
             window.addEventListener('keydown',(event)=>{
             switch (event.keyCode){
@@ -105,13 +56,29 @@ export default {
                     }
                 break;
                 case 13: 
-                  if(this.bright){
-                    this.pitch = !this.pitch;
-                    this.highactive = 0;
-                  }   
+                    if(this.bright){
+                        this.pitch = !this.pitch;
+                    }  
                 break;
             }
             })  
+        },
+        inittimes(){
+            var year_arr = [];
+            var month_arr =[];
+            var day_arr =[];
+            for (var ii = 2000; ii <= 2030; ii++) {
+                year_arr.push(ii)
+            }
+            for(var li = 1 ; li <= 12 ; li++){
+                month_arr.push(li)
+            }
+            for(var ii = 1 ; ii <= 31 ; ii++){
+                day_arr.push(ii)
+            }
+            this.daycounts = day_arr;   
+            this.yearcounts = year_arr; 
+            this.monthcounts = month_arr;
         },
     },mounted(){
        this.control();
@@ -132,6 +99,8 @@ export default {
         height: 320px;
         background-color: darkgreen;
         position: relative;
+        display: -webkit-flex;
+        align-items:baseline;
     }
      .timeset .header{
         font-size: 28px;
@@ -139,13 +108,14 @@ export default {
         text-align: center;
         position: absolute;
     }
-    .time-box{
+    .timeset>.time-box{
         position: absolute;
         right: 30px;
-        width: 300px;
+        width: 740px;
         height: 190px;
         overflow: hidden;
-        top: 60px;
+        top: 75px;
+        /* background-color: burlywood; */
     }
     .time-box .time{
         position: absolute;
@@ -159,7 +129,54 @@ export default {
         top: 65px;
         font-size: 45px;
     }
-    .second{
-        left: 150px;
+    .timeset .timeloop.active{
+        background: lightpink;
     }
+    .timeset .year{
+        left: 20px;
+    }
+    .timeset .month{
+        left: 260px;
+    }
+    .timeset .day{
+        left: 400px; 
+    }
+    .timeset .hours{
+        left: 530px; 
+    }
+    .timeset .minute{
+        left: 630px;
+    }
+   
+    .timeset-year{
+        font-size: 45px;
+        position: absolute;
+        left: 180px;
+        top: 60px;
+    }
+    .timeset-month{
+        font-size: 45px;
+        position: absolute;
+        left: 340px;
+        top: 60px;
+    }
+   .timeset-day{
+        font-size: 45px;
+        position: absolute;
+        left: 480px;
+        top: 60px;
+    } 
+     .timeset-time{
+        font-size: 45px;
+        position: absolute;
+        left: 600px;
+        top: 60px;
+    }
+    .timeset-minute{
+        font-size: 45px;
+        position: absolute;
+        left: 695px;
+        top: 60px;
+    }
+    
 </style>

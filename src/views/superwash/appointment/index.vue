@@ -5,61 +5,33 @@
         <span class="cunxian" >预约</span>
         <div class="left" >结束时间</div>
         <div class="time-box" >
-            <!-- <Colon class="colon_hao">:</Colon> -->
-            <TimeHour
-                key="'mi'"
-                :counts="Minutecounts"
-                class="minute timeloop"
-                :class=" timpindex[active] == timpindex[0] ? 'active' : '' "
-                :timpindex ="timpindex[active] "
-                :active_i="h"
-                :pitch="pitch"
-                :ActiveIndex="ActiveIndex"
-                @loop1="loop1"
-                @loop2="loop2"
-                @loop3="loop3"
-            ></TimeHour>
-                <span class="time" >时</span>
-            <TimeMinute
-                key="'si'"
-                :counts="Secondcounts"
-                class="second timeloop"
-                :class=" timpindex[active] == timpindex[1] ? 'active' : '' "
-                :timpindex ="timpindex[active] "
-                :active_i="m"
-                :pitch="pitch"
-                @loop1="loop1"
-                @loop2="loop2"
-                @loop3="loop3"
-            ></TimeMinute>
-            <span class="fen" >分</span>
+            <TimeHour class="minute timeloop" :pitch="pitch"  :timpindex ="timpindex[active] " :class=" timpindex[active] == timpindex[0] ? 'active' : '' "  :counts="Hourscounts" :activeindex="Hoursactive" ></TimeHour>
+            <span class="appointment-time" >时</span>
+             <TimeMinute class="second timeloop" :pitch="pitch"  :timpindex ="timpindex[active] " :class=" timpindex[active] == timpindex[1] ? 'active' : '' "  :counts="Secondcounts" :activeindex="Hoursactive" ></TimeMinute>
+            <span class="appointment-fen" >分</span>
         </div>
       </div>
   </div>
 </template>
 
 <script>
-import Colon from '@/components/colon.vue'
 import superlfet from '@/components/superleft.vue'
 import TimeHour from '@/components/TimeHour.vue'
 import TimeMinute from '@/components/TimeMinute.vue'
 export default {
     components:{
-        superlfet,TimeHour,Colon,TimeMinute
+        superlfet,TimeHour,TimeMinute
     },
     data(){
       return{
-        timpindex:[0,1],
-        active:0,
-        Minutecounts:null,
-        Secondcounts:null,
-        m:0,
-        h:0,
         pitch:false,
+        timpindex:['3','4'],
+        active:0,
         bright:true,
-        ActiveIndex:0,
-        getHourNum: null, //获取当前设置小时
-        isTime: false, //是否是时间页面设置的小时与分钟
+        Hourscounts:null,
+        Secondcounts:null,
+        Hoursactive:0,
+        ed_style:0,
       }
     },
     watch:{
@@ -69,73 +41,53 @@ export default {
         inittimes(){
                 var m_arr = [];
                 var s_arr = [];
-                var ii = 0;
-                var ir = 0
-                for (; ii <= 24; ii++) {
+                for (var ii = 0; ii <= 24; ii++) {
                     m_arr.push(ii)
                 }
-                for (; ir < 60; ir++) {
+                for (var ir = 0; ir < 60; ir++) {
                     s_arr.push(ir)
                 }
-                this.Minutecounts = m_arr;
+                this.Hourscounts = m_arr;
                 this.Secondcounts = s_arr;
-        },
-        loop1(msg) {
-            // 设置分钟
-            this.m = msg;
-        },
-        loop2(msg) {
-            // 设置小时
-            this.h = msg;
-        },
-        loop3(msg) {
-            console.log('loop3')
-            console.log(msg)
         },
         control(){
             window.addEventListener('keydown',(event)=>{
             switch (event.keyCode){
-                case 37: 
-                console.log("this.active",this.active)
-                    
+                case 37:   
+                // console.log(this.active)
                     if(!this.pitch){
                         this.active<=0 ? this.active =2 : this.active
                         this.active--;
                     }
                 break;
                 case 39: 
-                console.log("this.active",this.active)
-                   
+                // console.log(this.active)
                     if(!this.pitch){
-
                         this.active++;
                         this.active>=2 ? this.active = 0 : this.active
                     }
-                     
                 break;
                 case 13: 
                   if(this.bright){
                     this.pitch = !this.pitch;
-                    // 存储
-                        localStorage.setItem("appointment", )
                   }   
                 break;
             }
             })  
         },
     },mounted(){
-       this.control();
+        this.control();
     },created () {
-      this.inittimes();
-      this.bright = true;
+        this.inittimes();
+        this.bright = true;
     },
     destroyed(){
-      this.bright = false;
+        this.bright = false;
     }
 }
 </script>
 
-<style>
+<style lang="css" scoped  >
     .appointment{
         display: -webkit-flex;
     }
@@ -166,12 +118,12 @@ export default {
         position: absolute;
         top: 20px;
     }
-    .appointment-right>div{
+     .appointment-right>div.left{
         display: -webkit-flex;
         position: absolute;
         width: 500px;
         top: 130px;
-    }
+    } 
     .appointment-right>div>span{
         flex: 1;
         text-align: center;
@@ -190,7 +142,7 @@ export default {
         left: 17px;
     }
     .second {
-        right: 17px;
+        left: 160px;
     }
     .colon_hao {
         top: 50%;
@@ -199,12 +151,18 @@ export default {
         -webkit-transform: translate(-55%, -50%);
     }
     .timeloop.active{
-        background: blue;
+        background: lightpink;
     }
-    .time-box .fen {
+    .time-box .appointment-fen {
         position: absolute;
-        left: 230px;
-        top: 65px;
+        left: 240px;
+        top: 60px;
+        font-size: 45px;
+    }
+    .time-box .appointment-time{
+        position: absolute;
+        left: 100px;
+        top: 60px;
         font-size: 45px;
     }
 </style>
