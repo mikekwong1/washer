@@ -4,9 +4,10 @@
        <div class="superwash-right" >
            <div  v-show="indexs==0" class="swiper" ref="move_wraper" >
                 <div  class="indexsone" v-for="(item,index) in arr " :key="index" >
-                    <span :class=" classindex == index ? 'active': ''" >{{item.title}}</span>
+                    <span :class=" classindex == index ? 'active': ''" >{{item.title}}  </span>             
                 </div>
                 <div  v-show=" classindex == 1" class="savetitle" >{{savetitle}}</div>
+                <span v-show=" classindex == 5"  class="appointmenttitle" >{{appointmenttime}}</span> 
            </div>
        </div>
    </div>
@@ -31,6 +32,7 @@ export default {
             //选中
             pitch:false,
             savetitle :null,
+            appointmenttime:null,
             // 判断进出回车按钮
             arrnull:true,
             
@@ -92,6 +94,15 @@ export default {
             }
             this.savetitle    = localStorage.getItem("savefresharr");
             console.log(localStorage.getItem("savefresharr"))
+        },
+        getsaveappointment(){            
+            if(localStorage.getItem("oppointmenthours")=="undefined"||localStorage.getItem("oppointmentminute")=="undefined"||localStorage.getItem("oppointmenthours")==null ||localStorage.getItem("oppointmentminute")==null){
+                return;
+            }
+            console.log(localStorage.getItem("oppointmenthours"),localStorage.getItem("oppointmentminute"))
+            var housr = localStorage.getItem("oppointmenthours")
+            var minute = localStorage.getItem("oppointmentminute")
+            this.appointmenttime = housr + '时' + minute + '分'
         }
       
     },mounted(){
@@ -101,6 +112,7 @@ export default {
     },created(){
         this.arrnull = true
         this.getsavefresh();
+        this.getsaveappointment();
         console.log(this.$root)      
     },beforeDestroy() {
         this.arrnull = false
@@ -220,4 +232,16 @@ export default {
     .timeloop.active{
         background: blue;
     }
+    .appointmenttitle{
+        color: white;
+        font-size: 28px;
+        position: absolute;
+        bottom: 90px; 
+        left: 895px;
+        /* right: 20px;  */
+        width: 150px;
+        text-align: center;
+        background: green;
+    }
+    
 </style>

@@ -19,7 +19,7 @@ export default {
         return{
             active:2,
             degreearr:['1','2','3','4','5','6'],
-            salinearr:[{title:"适合水硬度0-90pm"},{title:"适合水硬度91-200ppm"},{title:"适合水硬度201-300ppm"},{title:"适合水硬度301-400ppm"},{title:"适合水硬度401-600ppm"},{title:"适合水硬度600+ppm"}]
+            salinearr:[{title:"适合水硬度0-90pm"},{title:"适合水硬度91-200pm"},{title:"适合水硬度201-300pm"},{title:"适合水硬度301-400pm"},{title:"适合水硬度401-600pm"},{title:"适合水硬度600+pm"}]
         }
     },
     methods:{

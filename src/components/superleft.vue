@@ -3,7 +3,7 @@
         <span class="left-time" >{{gettime}}</span>
         <div class="left" >
             <span class="left-container" >70°超强洗</span>
-            <span class="left-bottom" >1时55分</span>
+            <span class="left-bottom" >{{appointmenttime}}</span>
         </div>
   </div>
 </template>
@@ -13,10 +13,11 @@ export default {
     data(){
         return{
             gettime:'',//当前时间
+            appointmenttime:null,//预约时间
         }
     },
     methods:{
-        getTime:function(){
+      getTime:function(){
         var _this = this;
         let hh = new Date().getHours();
         let mf = new Date().getMinutes()<10 ? '0'+new Date().getMinutes() : new Date().getMinutes();
@@ -25,6 +26,15 @@ export default {
       currentTime(){
         setInterval(this.getTime,500)
       },
+      getsaveappointment(){            
+            if(localStorage.getItem("oppointmenthours")=="undefined"||localStorage.getItem("oppointmentminute")=="undefined"||localStorage.getItem("oppointmenthours")==null ||localStorage.getItem("oppointmentminute")==null){
+                return;
+            }
+            console.log(localStorage.getItem("oppointmenthours"),localStorage.getItem("oppointmentminute"))
+            var housr = localStorage.getItem("oppointmenthours")
+            var minute = localStorage.getItem("oppointmentminute")
+            this.appointmenttime = housr + '时' + minute + '分'
+        }
     },
     mounted(){
       setTimeout(()=>{
@@ -33,7 +43,8 @@ export default {
      
     }, 
     created() {
-      this.currentTime();    
+      this.currentTime(); 
+      this.getsaveappointment();   
     },
 }
 </script>

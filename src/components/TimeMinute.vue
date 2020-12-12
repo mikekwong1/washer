@@ -1,7 +1,7 @@
 <template>
     <div class="wraper" >
       <ul class="move_ul" ref="move_ele" >
-        <li v-for=" (item,index) in counts "  :key="index" :class="{ activestyle: item === activeindex  }"  >
+        <li v-for=" (item,index) in counts "  :key="index" :class="{ activestyle: item === activeindex  && indexs[highindex] == 0 }"  >
             {{item < 10 ? "0" + item : " " + item }}
         </li>
       </ul>
@@ -15,6 +15,8 @@ export default {
     return{
       ed_style:null,
       activeindex:0,
+      highindex: 0 ,
+      indexs:['0','1'],
     }
   },
   methods:{
@@ -38,6 +40,15 @@ export default {
               this.activeindex++;
               this.move();
             }             
+            break;
+            case 13:  
+              if(this.highindex == 0&&this.timpindex==4){
+                this.highindex = 1
+              }else if(this.highindex == 1&&this.timpindex==4){
+                this.highindex = 0
+                console.log("oppointmentminute",this.activeindex)
+                localStorage.setItem("oppointmentminute",this.activeindex);
+              }        
             break;
           }
         })

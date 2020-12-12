@@ -5,10 +5,10 @@
         <span class="cunxian" >预约</span>
         <div class="left" >结束时间</div>
         <div class="time-box" >
-            <TimeHour class="minute timeloop" :pitch="pitch"  :timpindex ="timpindex[active] " :class=" timpindex[active] == timpindex[0] ? 'active' : '' "  :counts="Hourscounts" :activeindex="Hoursactive" ></TimeHour>
+            <TimeHour class="minute timeloop" :pitch="pitch"  :timpindex ="timpindex[active] " :class=" timpindex[active] == timpindex[0] ? 'active' : '' "  :counts="Hourscounts"  ></TimeHour>
             <span class="appointment-time" >时</span>
-             <TimeMinute class="second timeloop" :pitch="pitch"  :timpindex ="timpindex[active] " :class=" timpindex[active] == timpindex[1] ? 'active' : '' "  :counts="Secondcounts" :activeindex="Hoursactive" ></TimeMinute>
-            <span class="appointment-fen" >分</span>
+             <TimeMinute class="second timeloop" :pitch="pitch"  :timpindex ="timpindex[active] " :class=" timpindex[active] == timpindex[1] ? 'active' : '' "  :counts="Secondcounts"  ></TimeMinute>
+            <span class="appointment-fen" >分</span>   
         </div>
       </div>
   </div>
@@ -18,9 +18,10 @@
 import superlfet from '@/components/superleft.vue'
 import TimeHour from '@/components/TimeHour.vue'
 import TimeMinute from '@/components/TimeMinute.vue'
+
 export default {
     components:{
-        superlfet,TimeHour,TimeMinute
+        superlfet,TimeHour,TimeMinute,
     },
     data(){
       return{
@@ -28,10 +29,12 @@ export default {
         timpindex:['3','4'],
         active:0,
         bright:true,
-        Hourscounts:null,
-        Secondcounts:null,
+        scounts:null,
         Hoursactive:0,
         ed_style:0,
+        highindex:0,
+        Hourscounts:null,
+        Minutescounts:null,
       }
     },
     watch:{
@@ -54,14 +57,14 @@ export default {
             window.addEventListener('keydown',(event)=>{
             switch (event.keyCode){
                 case 37:   
-                // console.log(this.active)
+                 console.log(this.active)
                     if(!this.pitch){
                         this.active<=0 ? this.active =2 : this.active
                         this.active--;
                     }
                 break;
                 case 39: 
-                // console.log(this.active)
+                 console.log(this.active)
                     if(!this.pitch){
                         this.active++;
                         this.active>=2 ? this.active = 0 : this.active
@@ -69,6 +72,7 @@ export default {
                 break;
                 case 13: 
                   if(this.bright){
+                      this.highindex = 1
                     this.pitch = !this.pitch;
                   }   
                 break;
@@ -149,9 +153,6 @@ export default {
         left: 50%;
         transform: translate(-55%, -50%);
         -webkit-transform: translate(-55%, -50%);
-    }
-    .timeloop.active{
-        background: lightpink;
     }
     .time-box .appointment-fen {
         position: absolute;

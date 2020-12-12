@@ -1,10 +1,11 @@
 <template>
     <div class="annotation" >
-        <span class="left-time" >12:00</span>
+        <!-- <span class="left-time" >12:00</span>
         <div class="left" >
             <span class="left-container" >70°超强洗</span>
             <span class="left-bottom" >1时55分</span>
-        </div>
+        </div> -->
+        <superleft></superleft>
         <div class="right darkgreen" >
            清洗胀污成都较重的餐具，如果油污的餐盘、锅具等; 
         </div>
@@ -12,8 +13,11 @@
 </template>
 
 <script>
+import superleft from '@/components/superleft.vue'
 export default {
-    
+    components:{
+        superleft
+    }
 }
 </script>
 

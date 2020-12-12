@@ -18,7 +18,7 @@ export default {
             gettime: "",
             activeindex:0,
             msg:1,
-            arr:[{title:'快速洗',url:''},{title:'超强洗 1时55分',url:'/Superwash'},{title:'节能洗',url:''},{title:'静音洗',url:''},{title:'标准洗',url:''},{title:'预充洗',url:''},{title:'除菌洗',url:''},{title:'油网洗',url:''},{title:'火锅洗',url:''},{title:'海鲜洗',url:''},{title:'瓜果洗',url:''},{title:'自定义',url:'/defined'},{title:'设置',url:'/setting'}],
+            arr:[{title:'快速洗',url:''},{title:'超强洗',url:'/Superwash'},{title:'节能洗',url:''},{title:'静音洗',url:''},{title:'标准洗',url:''},{title:'预充洗',url:''},{title:'除菌洗',url:''},{title:'油网洗',url:''},{title:'火锅洗',url:''},{title:'海鲜洗',url:''},{title:'瓜果洗',url:''},{title:'自定义',url:'/defined'},{title:'设置',url:'/setting'}],
             rootsactive:true,
         }
     },
@@ -93,6 +93,15 @@ export default {
         },
         click(index){
             this.$router.push(index);
+        },
+        getsaveappointment(){            
+            if(localStorage.getItem("oppointmenthours")=="undefined"||localStorage.getItem("oppointmentminute")=="undefined"||localStorage.getItem("oppointmenthours")==null ||localStorage.getItem("oppointmentminute")==null){
+                return;
+            }
+            console.log(localStorage.getItem("oppointmenthours"),localStorage.getItem("oppointmentminute"))
+            var housr = localStorage.getItem("oppointmenthours")
+            var minute = localStorage.getItem("oppointmentminute")
+            this.arr[1].title = '超强洗' + housr + '时' + minute + '分'
         }
     },
     computed:{
@@ -102,6 +111,7 @@ export default {
         this.control();
     },
     created () {
+        this.getsaveappointment();
         this.currentTime();
         this.rootsactive =true;
     },
